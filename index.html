@@ -7,16 +7,39 @@
     <meta name="viewport" content="width=device-width, initial-scale = 1, maximum-scale=1, user-scalable=no"/>
 
     <!-- Personal Stylesheets -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css" type="text/css">
   </head>
 
   <body>
-    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
-    <div id="map"></div>
+
+  	<div id="search-wrap" class="container">
+  		<h3>Demographic NYC Visualization</h3>
+  		<div class="input-group">
+	   		<input id="address" class="form-control" value="New York City, New York" />
+	   		<span class="input-group-btn">
+	   			<input id="btn" class="btn btn-default" value="submit" type="button" />
+	   		</span>
+		</div>
+	</div>
+
+	<!--<div id="map-wrapper">-->
+		<div id="map-canvas"></div>
+		<div id="result-canvas">
+			<div id="result-content">
+				<h3>Result:</h3>
+			</div>
+		</div>
+	<!--</div>-->
+
 
     <!--scripts-->
-    <script type="text/javascript" src="script.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCD06bsPXOb_EKKgeAWrk0TxwVQAXyJ5Ng&callback&libraries=places&callback=initAutocomplete"
-         async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="script.js"></script>
+
+    
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
   </body>
 </html>
