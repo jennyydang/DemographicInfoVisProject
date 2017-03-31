@@ -144,7 +144,7 @@ function checkZipcode(){
       perNoPubAssist = 94; 
       perPubAssistUnknown = 0;
       break;
-
+      
     case "10451":
       participants = 41;
       female = 21;
@@ -189,7 +189,7 @@ function checkZipcode(){
       perNoPubAssist = 71; 
       perPubAssistUnknown = 0;
       break;
-
+      
     case "10455":
       participants = 41;
       female = 17;
@@ -234,7 +234,7 @@ function checkZipcode(){
       perNoPubAssist = 74; 
       perPubAssistUnknown = 0;
       break;
-
+      
     case "10458":
       participants = 52;
       female = 25;
@@ -279,7 +279,7 @@ function checkZipcode(){
       perNoPubAssist = 63; 
       perPubAssistUnknown = 0;
       break;
-
+      
     case "10461":
       participants = 49;
       female = 26;
@@ -819,7 +819,7 @@ function checkZipcode(){
       perNoPubAssist = 48; 
       perPubAssistUnknown = 0;
       break;
-
+      
     case "11223":
       participants = 109;
       female = 53;
@@ -954,7 +954,7 @@ function checkZipcode(){
       perNoPubAssist = 58; 
       perPubAssistUnknown = 0;
       break;
-  
+
     case "11229":
       participants = 52;
       female = 32;
@@ -999,7 +999,7 @@ function checkZipcode(){
       perNoPubAssist = 90; 
       perPubAssistUnknown = 0;
       break;
-
+      
     case "11230":
       participants = 248;
       female = 194;
