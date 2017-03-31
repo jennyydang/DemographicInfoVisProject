@@ -1,9 +1,42 @@
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  padding: 0px
 }
 
-#map {
+#map-canvas {
 	height: 100%;
+	width: 95%;
+	margin: 0 auto;
+}
+
+#search-wrap {
+	text-align: center;
+	margin: 0 auto;
+	padding: 0em 1em 1em 1em;
+}
+
+#result-canvas { 
+	width: 250px;
+	height: 250px;
+	background: rgba(256, 256, 256, .7);
+	position: absolute; 
+	top: 73%; 
+	left: 4%; 
+	z-index: 99;
+	overflow: scroll; 
+}
+
+#result-content {
+	padding: 1em
+}
+#result-content h3 {
+	margin: 0;
+}
+
+.input-group {
+	width: 40%;
+	margin: 0 auto;
 }
