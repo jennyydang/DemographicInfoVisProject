@@ -32,6 +32,11 @@ function codeAddress() {
   });
 }
 
+function ShowHideDiv(chkResults) {
+  var resultsCanvas = document.getElementById("result-canvas");
+  resultsCanvas.style.display = chkResults.checked ? "block" : "none";
+}
+
 function checkZipcode(){
   var zipcode = document.getElementById("address").value;
 
@@ -50,7 +55,7 @@ function checkZipcode(){
 
   switch (zipcode) {
 
-    case 10001:
+    case "10001":
       participants = 44;
       female = 22;
       male = 22;
@@ -95,7 +100,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 10002:
+    case "10002":
       participants = 35;
       female = 19;
       male = 16;
@@ -139,8 +144,8 @@ function checkZipcode(){
       perNoPubAssist = 94; 
       perPubAssistUnknown = 0;
       break;
-
-    case 10451:
+      
+    case "10451":
       participants = 41;
       female = 21;
       male = 20;
@@ -184,8 +189,8 @@ function checkZipcode(){
       perNoPubAssist = 71; 
       perPubAssistUnknown = 0;
       break;
-
-    case 10455:
+      
+    case "10455":
       participants = 41;
       female = 17;
       male = 10;
@@ -229,8 +234,8 @@ function checkZipcode(){
       perNoPubAssist = 74; 
       perPubAssistUnknown = 0;
       break;
-
-    case 10458:
+      
+    case "10458":
       participants = 52;
       female = 25;
       male = 27;
@@ -274,8 +279,8 @@ function checkZipcode(){
       perNoPubAssist = 63; 
       perPubAssistUnknown = 0;
       break;
-
-    case 10461:
+      
+    case "10461":
       participants = 49;
       female = 26;
       male = 23;
@@ -320,7 +325,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 10463:
+    case "10463":
       participants = 59;
       female = 33;
       male = 26;
@@ -365,7 +370,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 10466:
+    case "10466":
       participants = 65;
       female = 39;
       male = 26;
@@ -410,7 +415,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 10467:
+    case "10467":
       participants = 106;
       female = 65;
       male = 35;
@@ -455,7 +460,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 10468:
+    case "10468":
       participants = 81;
       female = 46;
       male = 35;
@@ -500,7 +505,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 10471:
+    case "10471":
       participants = 43;
       female = 24;
       male = 19;
@@ -545,7 +550,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 11204:
+    case "11204":
       participants = 37;
       female = 17;
       male = 20;
@@ -590,7 +595,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 11210:
+    case "11210":
       participants = 36;
       female = 12;
       male = 24;
@@ -635,7 +640,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 11211:
+    case "11211":
       participants = 34;
       female = 31;
       male = 3;
@@ -680,7 +685,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 11213:
+    case "11213":
       participants = 38;
       female = 17;
       male = 21;
@@ -725,7 +730,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 11218:
+    case "11218":
       participants = 111;
       female = 97;
       male = 14;
@@ -770,7 +775,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 11219:
+    case "11219":
       participants = 214;
       female = 182;
       male = 32;
@@ -814,8 +819,8 @@ function checkZipcode(){
       perNoPubAssist = 48; 
       perPubAssistUnknown = 0;
       break;
-
-    case 11223:
+      
+    case "11223":
       participants = 109;
       female = 53;
       male = 56;
@@ -860,7 +865,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 11224:
+    case "11224":
       participants = 93;
       female = 53;
       male = 40;
@@ -905,7 +910,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 11225:
+    case "11225":
       participants = 52;
       female = 52;
       male = 0;
@@ -949,8 +954,8 @@ function checkZipcode(){
       perNoPubAssist = 58; 
       perPubAssistUnknown = 0;
       break;
-  
-    case 11229:
+
+    case "11229":
       participants = 52;
       female = 32;
       male = 22;
@@ -994,8 +999,8 @@ function checkZipcode(){
       perNoPubAssist = 90; 
       perPubAssistUnknown = 0;
       break;
-
-    case 11230:
+      
+    case "11230":
       participants = 248;
       female = 194;
       male = 54;
@@ -1040,7 +1045,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 11234:
+    case "11234":
       participants = 59;
       female = 29;
       male = 30;
@@ -1085,7 +1090,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 11235:
+    case "11235":
       participants = 50;
       female = 17;
       male = 33;
@@ -1130,7 +1135,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 11691:
+    case "11691":
       participants = 37;
       female = 12;
       male = 25;
@@ -1175,7 +1180,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 11428:
+    case "11428":
       participants = 124;
       female = 74;
       male = 50;
@@ -1220,7 +1225,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 11435:
+    case "11435":
       participants = 55;
       female = 5;
       male = 50;
@@ -1265,7 +1270,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 11466:
+    case "11466":
       participants = 44;
       female = 44;
       male = 0;
@@ -1310,7 +1315,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 11528:
+    case "11528":
       participants = 52;
       female = 2;
       male = 50;
@@ -1355,7 +1360,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 12701:
+    case "12701":
       participants = 87;
       female = 49;
       male = 38;
@@ -1400,7 +1405,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 12734:
+    case "12734":
       participants = 252;
       female = 170;
       male = 82;
@@ -1445,7 +1450,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 12737:
+    case "12737":
       participants = 35;
       female = 34;
       male = 1;
@@ -1490,7 +1495,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 12750:
+    case "12750":
       participants = 37;
       female = 36;
       male = 1;
@@ -1535,7 +1540,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 12754:
+    case "12754":
       participants = 134;
       female = 64;
       male = 70;
@@ -1580,7 +1585,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 12758:
+    case "12758":
       participants = 82;
       female = 50;
       male = 32;
@@ -1625,7 +1630,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 12764:
+    case "12764":
       participants = 64;
       female = 61;
       male = 3;
@@ -1670,7 +1675,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 12768:
+    case "12768":
       participants = 63;
       female = 1;
       male = 62;
@@ -1715,7 +1720,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 12779:
+    case "12779":
       participants = 242;
       female = 183;
       male = 59;
@@ -1760,7 +1765,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 12783:
+    case "12783":
       participants = 201;
       female = 66;
       male = 135;
@@ -1805,7 +1810,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 12788:
+    case "12788":
       participants = 83;
       female = 39;
       male = 44;
@@ -1850,7 +1855,7 @@ function checkZipcode(){
       perPubAssistUnknown = 0;
       break;
 
-    case 12789:
+    case "12789":
       participants = 272;
       female = 115;
       male = 157;
@@ -1896,25 +1901,29 @@ function checkZipcode(){
       break;
   }
 
-  document.getElementById("result-content").innerHTML = "ZipCode: " + zipcode +
-    "<br/>Participants: " + participants + 
-    "<br/>Female: " + female + " (" + perFemale + "%)" + 
-    "<br/>Male: " + male + " (" + perMale + "%)" + 
-    "<br/>Gender Unknown: " + unknown + " (" + perUnknown + "%)" + 
-    "<br/>Pacific Islander: " + pIslander + " (" + perPIslander + "%)" + 
-    "<br/>Hispanic Latino: " + hLatino + " (" + perHLatino + "%)" + 
-    "<br/>Native American: " + nAmerican + " (" + perNAmerican + "%)" + 
-    "<br/>Asian: " + asian + " (" + perAsian + "%)" + 
-    "<br/>Caucasian: " + white + " (" + perWhite + "%)" + 
-    "<br/>African: " + black + " (" + perBlack + "%)" + 
-    "<br/>Other Ethnicity: " + oEthnicity + " (" + perEthnicity + "%)" + 
-    "<br/>Ethnicity Unknown: " + ethUnknown + " (" + perEthUnknown + "%)" + 
-    "<br/>Permanent Resident Alien: " + pResidentAlien + " (" + perResidentAlien + "%)" + 
-    "<br/>US Citizen: " + usCitizen + " (" + perCitizen + "%)" + 
-    "<br/>Other Citizen Status: " + oCitizenStatus + " (" + perCitizenStatus + "%)" + 
-    "<br/>Receives Public Assistance: " + pubAssist + " (" + perPubAssist + "%)" + 
-    "<br/>No Public Assistance: " + noPubAssist + " (" + perNoPubAssist + "%)";
+  if (zipcode == "New York City, New York") {
 
+  } else {
+    document.getElementById("result-content").innerHTML = "<h3>Result:</h3>" + 
+      "ZipCode: " + zipcode +
+      "<br/>Participants: " + participants + 
+      "<br/>Female: " + female + " (" + perFemale + "%)" + 
+      "<br/>Male: " + male + " (" + perMale + "%)" + 
+      "<br/>Gender Unknown: " + unknown + " (" + perUnknown + "%)" + 
+      "<br/>Pacific Islander: " + pIslander + " (" + perPIslander + "%)" + 
+      "<br/>Hispanic Latino: " + hLatino + " (" + perHLatino + "%)" + 
+      "<br/>Native American: " + nAmerican + " (" + perNAmerican + "%)" + 
+      "<br/>Asian: " + asian + " (" + perAsian + "%)" + 
+      "<br/>Caucasian: " + white + " (" + perWhite + "%)" + 
+      "<br/>African: " + black + " (" + perBlack + "%)" + 
+      "<br/>Other Ethnicity: " + oEthnicity + " (" + perEthnicity + "%)" + 
+      "<br/>Ethnicity Unknown: " + ethUnknown + " (" + perEthUnknown + "%)" + 
+      "<br/>Permanent Resident Alien: " + pResidentAlien + " (" + perResidentAlien + "%)" + 
+      "<br/>US Citizen: " + usCitizen + " (" + perCitizen + "%)" + 
+      "<br/>Other Citizen Status: " + oCitizenStatus + " (" + perCitizenStatus + "%)" + 
+      "<br/>Receives Public Assistance: " + pubAssist + " (" + perPubAssist + "%)" + 
+      "<br/>No Public Assistance: " + noPubAssist + " (" + perNoPubAssist + "%)";
+  }
 }
 
 function initialize() {
