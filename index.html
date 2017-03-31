@@ -14,7 +14,8 @@
   <body>
 
   	<div id="search-wrap" class="container">
-  		<h3>Demographic NYC Visualization</h3>
+  		<a href="index.html"><h3>Demographic NYC Visualization</h3></a>
+
   		<div class="input-group">
 	   		<input id="address" class="form-control" value="New York City, New York" />
 	   		<span class="input-group-btn">
@@ -23,15 +24,27 @@
 		</div>
 	</div>
 
-	<!--<div id="map-wrapper">-->
-		<div id="map-canvas"></div>
-		<div id="result-canvas">
-			<div id="result-content">
-				<h3>Result:</h3>
-			</div>
-		</div>
-	<!--</div>-->
+	<div id="layer-controls">
+		<form>
+			<label for="chkResults" class="checkbox-inline">
+     			<input type="checkbox" value="" onclick="ShowHideDiv(this)" checked>Results
+    		</label>
+		    <label class="radio-inline">
+		    	<input type="radio" name="optradio">Layer 1
+		    </label>
+		    <label class="radio-inline">
+		    	<input type="radio" name="optradio">Layer 2
+		    </label>
+		    <label class="radio-inline">
+		    	<input type="radio" name="optradio">Layer 3
+		    </label>
+  		</form>
+	</div>
 
+	<div id="map-canvas"></div>
+	<div id="result-canvas">
+		<div id="result-content"></div>
+	</div>
 
     <!--scripts-->
     <script src="https://maps.googleapis.com/maps/api/js"></script>
