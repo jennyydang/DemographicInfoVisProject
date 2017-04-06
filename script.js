@@ -15,10 +15,10 @@ function codeAddress() {
         marker.setMap(null);
       }
 
-      marker = new google.maps.Marker({
-        map: map,
-        position: results[0].geometry.location
-      });
+      // marker = new google.maps.Marker({
+      //   map: map,
+      //   position: results[0].geometry.location
+      // });
 
       if (results[0].geometry.viewport) {
         map.fitBounds(results[0].geometry.viewport);
@@ -1946,30 +1946,34 @@ function initialize() {
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
+//1frxdip2S5GlSk_9gIhNAN9yPZcNtAxaWAAFNb0Dw
     layer = new google.maps.FusionTablesLayer(tableid);
     layer.setQuery("SELECT 'geometry' FROM " + tableid);
 
     var layer = new google.maps.FusionTablesLayer({
        query: {
          select: 'geometry',
-         from: '1frxdip2S5GlSk_9gIhNAN9yPZcNtAxaWAAFNb0Dw',
+         from: '1Nrqoo5iSJW363DDfDx5NKCrQvQVLuKGg8wKF0i2S',
        },
+
        styles: [{
           polygonOptions: {
-            fillColor: '#0000ff',
-            fillOpacity: 0.01,
-            zIndex: 1000,
-            strokeWeight: 0.5,
-            strokeOpacity: 0.7,
+            fillColor: '#FF0000',
+            fillOpacity: 0.3
+            // fillColor: '#0000ff',
+            // fillOpacity: 0.01,
+            // zIndex: 1000,
+            // strokeWeight: 0.5,
+            // strokeOpacity: 0.7,
           }
         },  {
-          where: "'ZIP' IN (" + zipCodesList + ")",
+          where: "'PERCENT FEMALE' >= 0.5 ",
           polygonOptions: {
             fillColor: '#0000FF',
             fillOpacity: 0.3
           }
         }],
-         suppressInfoWindows:true,
+         suppressInfoWindows:false,
      });
     // layer.set('styles', [{
     //   polygonOption: {
