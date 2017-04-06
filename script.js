@@ -1,5 +1,7 @@
 var geocoder, map, marker, options;
 
+var layer = null;
+
 function codeAddress() {
 
   var address = document.getElementById("address").value;
@@ -35,6 +37,51 @@ function codeAddress() {
 function ShowHideDiv(chkResults) {
   var resultsCanvas = document.getElementById("result-canvas");
   resultsCanvas.style.display = chkResults.checked ? "block" : "none";
+}
+
+function displayGender(chkResults) {
+//  layer.setMap(null);
+
+  if (!layer) {
+    layer = new google.maps.FusionTablesLayer({
+       query: {
+         select: 'geometry',
+         from: '1Nrqoo5iSJW363DDfDx5NKCrQvQVLuKGg8wKF0i2S',
+       },
+
+       styles: [{
+          polygonOptions: {
+            fillColor: '#FF0000',
+            fillOpacity: 0.3
+            // fillColor: '#0000ff',
+            // fillOpacity: 0.01,
+            // zIndex: 1000,
+            // strokeWeight: 0.5,
+            // strokeOpacity: 0.7,
+          }
+        },  {
+          where: "'PERCENT FEMALE' >= 0.5 ",
+          polygonOptions: {
+            fillColor: '#0000FF',
+            fillOpacity: 0.3
+          }
+        }],
+         suppressInfoWindows:false,
+     });
+    layer.setMap(map);
+
+    google.maps.event.addListener(layer, 'click',
+                            function(e){
+                              console.log(e);
+                              console.log(e.row.ZIP.value);
+                              checkZipcode(e.row.ZIP.value);
+                            });
+
+  } else {
+    layer.setMap(null);
+    layer = null;
+    chkResults.checked = false;
+  }
 }
 
 function checkZipcode(zipcode){
@@ -1947,50 +1994,9 @@ function initialize() {
     });
 
 //1frxdip2S5GlSk_9gIhNAN9yPZcNtAxaWAAFNb0Dw
-    layer = new google.maps.FusionTablesLayer(tableid);
-    layer.setQuery("SELECT 'geometry' FROM " + tableid);
+    // layer = new google.maps.FusionTablesLayer(tableid);
+    // layer.setQuery("SELECT 'geometry' FROM " + tableid);
 
-    var layer = new google.maps.FusionTablesLayer({
-       query: {
-         select: 'geometry',
-         from: '1Nrqoo5iSJW363DDfDx5NKCrQvQVLuKGg8wKF0i2S',
-       },
-
-       styles: [{
-          polygonOptions: {
-            fillColor: '#FF0000',
-            fillOpacity: 0.3
-            // fillColor: '#0000ff',
-            // fillOpacity: 0.01,
-            // zIndex: 1000,
-            // strokeWeight: 0.5,
-            // strokeOpacity: 0.7,
-          }
-        },  {
-          where: "'PERCENT FEMALE' >= 0.5 ",
-          polygonOptions: {
-            fillColor: '#0000FF',
-            fillOpacity: 0.3
-          }
-        }],
-         suppressInfoWindows:false,
-     });
-    // layer.set('styles', [{
-    //   polygonOption: {
-    //     fillColor: '#FFFFFF',
-    //     fillOpacity: 0.3
-    //   }
-    // }]);
-    console.log(layer);
-    layer.setMap(map);
-    console.log(layer);
-
-    google.maps.event.addListener(layer, 'click',
-                            function(e){
-                              console.log(e);
-                              console.log(e.row.ZIP.value);
-                              checkZipcode(e.row.ZIP.value);
-                            });
 
     google.maps.event.addListener(map, "bounds_changed", function() {
       displayZips();
