@@ -1,5 +1,7 @@
 var geocoder, map, marker, options;
 
+var layer = null;
+
 function codeAddress() {
 
   var address = document.getElementById("address").value;
@@ -15,10 +17,10 @@ function codeAddress() {
         marker.setMap(null);
       }
 
-      marker = new google.maps.Marker({
-        map: map,
-        position: results[0].geometry.location
-      });
+      // marker = new google.maps.Marker({
+      //   map: map,
+      //   position: results[0].geometry.location
+      // });
 
       if (results[0].geometry.viewport) {
         map.fitBounds(results[0].geometry.viewport);
@@ -37,10 +39,56 @@ function ShowHideDiv(chkResults) {
   resultsCanvas.style.display = chkResults.checked ? "block" : "none";
 }
 
-function checkZipcode(){
-  var zipcode = document.getElementById("address").value;
+function displayGender(chkResults) {
+//  layer.setMap(null);
 
-  var participants, female, male, unknown; 
+  if (!layer) {
+    layer = new google.maps.FusionTablesLayer({
+       query: {
+         select: 'geometry',
+         from: '1Nrqoo5iSJW363DDfDx5NKCrQvQVLuKGg8wKF0i2S',
+       },
+
+       styles: [{
+          polygonOptions: {
+            fillColor: '#FF0000',
+            fillOpacity: 0.3
+            // fillColor: '#0000ff',
+            // fillOpacity: 0.01,
+            // zIndex: 1000,
+            // strokeWeight: 0.5,
+            // strokeOpacity: 0.7,
+          }
+        },  {
+          where: "'PERCENT FEMALE' >= 0.5 ",
+          polygonOptions: {
+            fillColor: '#0000FF',
+            fillOpacity: 0.3
+          }
+        }],
+         suppressInfoWindows:false,
+     });
+    layer.setMap(map);
+
+    google.maps.event.addListener(layer, 'click',
+                            function(e){
+                              console.log(e);
+                              console.log(e.row.ZIP.value);
+                              checkZipcode(e.row.ZIP.value);
+                            });
+
+  } else {
+    layer.setMap(null);
+    layer = null;
+    chkResults.checked = false;
+  }
+}
+
+function checkZipcode(zipcode){
+  if (!zipcode)
+    zipcode = document.getElementById("address").value;
+
+  var participants, female, male, unknown;
   var perFemale, perMale, perUnknown;
 
   var pIslander, hLatino, nAmerican, asian, white, black, oEthnicity, ethUnknown;
@@ -49,7 +97,7 @@ function checkZipcode(){
   var pResidentAlien, usCitizen, oCitizenStatus;
   var perResidentAlien, perCitizen, perCitizenStatus;
 
-  var pubAssist, noPubAssist, pubAssistUnknown; 
+  var pubAssist, noPubAssist, pubAssistUnknown;
   var perPubAssist, perNoPubAssist, perPubAssistUnknown;
 
 
@@ -62,41 +110,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 50;
-      perMale = 50; 
+      perMale = 50;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 16; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 16;
+      nAmerican = 0;
       asian = 3;
-      white = 1; 
+      white = 1;
       black = 21;
       oEthnicity = 3;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 36;
       perNAmerican = 0;
       perAsian = 7;
       perWhite = 2;
-      perBlack = 48; 
+      perBlack = 48;
       perEthnicity = 7;
       perEthUnknown = 0;
 
-      pResidentAlien = 2; 
+      pResidentAlien = 2;
       usCitizen = 42;
       oCitizenStatus = 0;
 
-      perResidentAlien = 5; 
+      perResidentAlien = 5;
       perCitizen = 95;
       perCitizenStatus = 0;
 
       pubAssist = 20;
-      noPubAssist = 24; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 24;
+      pubAssistUnknown = 0;
 
       perPubAssist = 45;
-      perNoPubAssist = 55; 
+      perNoPubAssist = 55;
       perPubAssistUnknown = 0;
       break;
 
@@ -107,41 +155,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 54;
-      perMale = 46; 
+      perMale = 46;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 1; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 1;
+      nAmerican = 0;
       asian = 28;
-      white = 6; 
+      white = 6;
       black = 0;
       oEthnicity = 0;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 3;
       perNAmerican = 0;
       perAsian = 80;
       perWhite = 17;
-      perBlack = 0; 
+      perBlack = 0;
       perEthnicity = 0;
       perEthUnknown = 0;
 
-      pResidentAlien = 2; 
+      pResidentAlien = 2;
       usCitizen = 33;
       oCitizenStatus = 0;
 
-      perResidentAlien = 6; 
+      perResidentAlien = 6;
       perCitizen = 94;
       perCitizenStatus = 0;
 
       pubAssist = 2;
-      noPubAssist = 33; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 33;
+      pubAssistUnknown = 0;
 
       perPubAssist = 6;
-      perNoPubAssist = 94; 
+      perNoPubAssist = 94;
       perPubAssistUnknown = 0;
       break;
 
@@ -152,41 +200,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 51;
-      perMale = 49; 
+      perMale = 49;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 22; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 22;
+      nAmerican = 0;
       asian = 1;
-      white = 0; 
+      white = 0;
       black = 15;
       oEthnicity = 2;
       ethUnknown = 1;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 54;
       perNAmerican = 0;
       perAsian = 2;
       perWhite = 0;
-      perBlack = 37; 
+      perBlack = 37;
       perEthnicity = 5;
       perEthUnknown = 2;
 
-      pResidentAlien = 3; 
+      pResidentAlien = 3;
       usCitizen = 38;
       oCitizenStatus = 0;
 
-      perResidentAlien = 7; 
+      perResidentAlien = 7;
       perCitizen = 93;
       perCitizenStatus = 0;
 
       pubAssist = 12;
-      noPubAssist = 29; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 29;
+      pubAssistUnknown = 0;
 
       perPubAssist = 29;
-      perNoPubAssist = 71; 
+      perNoPubAssist = 71;
       perPubAssistUnknown = 0;
       break;
 
@@ -197,41 +245,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 63;
-      perMale = 37; 
+      perMale = 37;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 5; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 5;
+      nAmerican = 0;
       asian = 0;
-      white = 0; 
+      white = 0;
       black = 20;
       oEthnicity = 2;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 19;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 0;
-      perBlack = 74; 
+      perBlack = 74;
       perEthnicity = 7;
       perEthUnknown = 0;
 
-      pResidentAlien = 1; 
+      pResidentAlien = 1;
       usCitizen = 25;
       oCitizenStatus = 1;
 
-      perResidentAlien = 4; 
+      perResidentAlien = 4;
       perCitizen = 92;
       perCitizenStatus = 4;
 
       pubAssist = 7;
-      noPubAssist = 20; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 20;
+      pubAssistUnknown = 0;
 
       perPubAssist = 26;
-      perNoPubAssist = 74; 
+      perNoPubAssist = 74;
       perPubAssistUnknown = 0;
       break;
 
@@ -242,41 +290,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 48;
-      perMale = 52; 
+      perMale = 52;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 24; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 24;
+      nAmerican = 0;
       asian = 0;
-      white = 1; 
+      white = 1;
       black = 23;
       oEthnicity = 3;
       ethUnknown = 1;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 46;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 2;
-      perBlack = 44; 
+      perBlack = 44;
       perEthnicity = 6;
       perEthUnknown = 2;
 
-      pResidentAlien = 3; 
+      pResidentAlien = 3;
       usCitizen = 48;
       oCitizenStatus = 1;
 
-      perResidentAlien = 6; 
+      perResidentAlien = 6;
       perCitizen = 92;
       perCitizenStatus = 2;
 
       pubAssist = 19;
-      noPubAssist = 33; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 33;
+      pubAssistUnknown = 0;
 
       perPubAssist = 37;
-      perNoPubAssist = 63; 
+      perNoPubAssist = 63;
       perPubAssistUnknown = 0;
       break;
 
@@ -287,41 +335,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 53;
-      perMale = 47; 
+      perMale = 47;
       perUnknown = 0;
 
-      pIslander = 1; 
-      hLatino = 21; 
-      nAmerican = 1; 
+      pIslander = 1;
+      hLatino = 21;
+      nAmerican = 1;
       asian = 1;
-      white = 1; 
+      white = 1;
       black = 18;
       oEthnicity = 5;
       ethUnknown = 1;
 
-      perPIslander = 2; 
+      perPIslander = 2;
       perHLatino = 43;
       perNAmerican = 2;
       perAsian = 2;
       perWhite = 2;
-      perBlack = 37; 
+      perBlack = 37;
       perEthnicity = 10;
       perEthUnknown = 2;
 
-      pResidentAlien = 1; 
+      pResidentAlien = 1;
       usCitizen = 48;
       oCitizenStatus = 0;
 
-      perResidentAlien = 2; 
+      perResidentAlien = 2;
       perCitizen = 98;
       perCitizenStatus = 0;
 
       pubAssist = 21;
-      noPubAssist = 28; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 28;
+      pubAssistUnknown = 0;
 
       perPubAssist = 43;
-      perNoPubAssist = 57; 
+      perNoPubAssist = 57;
       perPubAssistUnknown = 0;
       break;
 
@@ -332,41 +380,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 56;
-      perMale = 44; 
+      perMale = 44;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 36; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 36;
+      nAmerican = 0;
       asian = 0;
-      white = 1; 
+      white = 1;
       black = 18;
       oEthnicity = 3;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 61;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 3;
-      perBlack = 31; 
+      perBlack = 31;
       perEthnicity = 5;
       perEthUnknown = 0;
 
-      pResidentAlien = 3; 
+      pResidentAlien = 3;
       usCitizen = 54;
       oCitizenStatus = 2;
 
-      perResidentAlien = 5; 
+      perResidentAlien = 5;
       perCitizen = 92;
       perCitizenStatus = 3;
 
       pubAssist = 20;
-      noPubAssist = 39; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 39;
+      pubAssistUnknown = 0;
 
       perPubAssist = 34;
-      perNoPubAssist = 66; 
+      perNoPubAssist = 66;
       perPubAssistUnknown = 0;
       break;
 
@@ -377,41 +425,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 60;
-      perMale = 40; 
+      perMale = 40;
       perUnknown = 0;
 
-      pIslander = 1; 
-      hLatino = 14; 
-      nAmerican = 0; 
+      pIslander = 1;
+      hLatino = 14;
+      nAmerican = 0;
       asian = 0;
-      white = 0; 
+      white = 0;
       black = 50;
       oEthnicity = 0;
       ethUnknown = 0;
 
-      perPIslander = 2; 
+      perPIslander = 2;
       perHLatino = 22;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 0;
-      perBlack = 76; 
+      perBlack = 76;
       perEthnicity = 0;
       perEthUnknown = 0;
 
-      pResidentAlien = 3; 
+      pResidentAlien = 3;
       usCitizen = 62;
       oCitizenStatus = 0;
 
-      perResidentAlien = 5; 
+      perResidentAlien = 5;
       perCitizen = 95;
       perCitizenStatus = 0;
 
       pubAssist = 17;
-      noPubAssist = 48; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 48;
+      pubAssistUnknown = 0;
 
       perPubAssist = 26;
-      perNoPubAssist = 74; 
+      perNoPubAssist = 74;
       perPubAssistUnknown = 0;
       break;
 
@@ -422,41 +470,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 61;
-      perMale = 39; 
+      perMale = 39;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 51; 
-      nAmerican = 1; 
+      pIslander = 0;
+      hLatino = 51;
+      nAmerican = 1;
       asian = 4;
-      white = 1; 
+      white = 1;
       black = 47;
       oEthnicity = 2;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 22;
       perNAmerican = 1;
       perAsian = 4;
       perWhite = 1;
-      perBlack = 44; 
+      perBlack = 44;
       perEthnicity = 2;
       perEthUnknown = 0;
 
-      pResidentAlien = 10; 
+      pResidentAlien = 10;
       usCitizen = 94;
       oCitizenStatus = 2;
 
-      perResidentAlien = 9; 
+      perResidentAlien = 9;
       perCitizen = 89;
       perCitizenStatus = 2;
 
       pubAssist = 33;
-      noPubAssist = 73; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 73;
+      pubAssistUnknown = 0;
 
       perPubAssist = 31;
-      perNoPubAssist = 69; 
+      perNoPubAssist = 69;
       perPubAssistUnknown = 0;
       break;
 
@@ -467,41 +515,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 57;
-      perMale = 43; 
+      perMale = 43;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 35; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 35;
+      nAmerican = 0;
       asian = 3;
-      white = 0; 
+      white = 0;
       black = 36;
       oEthnicity = 7;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 43;
       perNAmerican = 0;
       perAsian = 4;
       perWhite = 0;
-      perBlack = 44; 
+      perBlack = 44;
       perEthnicity = 9;
       perEthUnknown = 0;
 
-      pResidentAlien = 2; 
+      pResidentAlien = 2;
       usCitizen = 79;
       oCitizenStatus = 0;
 
-      perResidentAlien = 2; 
+      perResidentAlien = 2;
       perCitizen = 98;
       perCitizenStatus = 0;
 
       pubAssist = 23;
-      noPubAssist = 58; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 58;
+      pubAssistUnknown = 0;
 
       perPubAssist = 28;
-      perNoPubAssist = 72; 
+      perNoPubAssist = 72;
       perPubAssistUnknown = 0;
       break;
 
@@ -512,41 +560,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 56;
-      perMale = 44; 
+      perMale = 44;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 27; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 27;
+      nAmerican = 0;
       asian = 1;
-      white = 2; 
+      white = 2;
       black = 12;
       oEthnicity = 1;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 63;
       perNAmerican = 0;
       perAsian = 2;
       perWhite = 5;
-      perBlack = 28; 
+      perBlack = 28;
       perEthnicity = 2;
       perEthUnknown = 0;
 
-      pResidentAlien = 2; 
+      pResidentAlien = 2;
       usCitizen = 41;
       oCitizenStatus = 0;
 
-      perResidentAlien = 5; 
+      perResidentAlien = 5;
       perCitizen = 95;
       perCitizenStatus = 0;
 
       pubAssist = 17;
-      noPubAssist = 26; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 26;
+      pubAssistUnknown = 0;
 
       perPubAssist = 40;
-      perNoPubAssist = 60; 
+      perNoPubAssist = 60;
       perPubAssistUnknown = 0;
       break;
 
@@ -557,41 +605,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 46;
-      perMale = 54; 
+      perMale = 54;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 0; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 0;
+      nAmerican = 0;
       asian = 0;
-      white = 36; 
+      white = 36;
       black = 0;
       oEthnicity = 1;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 0;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 97;
-      perBlack = 0; 
+      perBlack = 0;
       perEthnicity = 3;
       perEthUnknown = 0;
 
-      pResidentAlien = 1; 
+      pResidentAlien = 1;
       usCitizen = 36;
       oCitizenStatus = 0;
 
-      perResidentAlien = 3; 
+      perResidentAlien = 3;
       perCitizen = 97;
       perCitizenStatus = 0;
 
       pubAssist = 19;
       noPubAssist = 18;
-      pubAssistUnknown = 0; 
+      pubAssistUnknown = 0;
 
       perPubAssist = 51;
-      perNoPubAssist = 49; 
+      perNoPubAssist = 49;
       perPubAssistUnknown = 0;
       break;
 
@@ -602,41 +650,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 33;
-      perMale = 67; 
+      perMale = 67;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 0; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 0;
+      nAmerican = 0;
       asian = 0;
-      white = 33; 
+      white = 33;
       black = 1;
       oEthnicity = 2;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 0;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 92;
-      perBlack = 3; 
+      perBlack = 3;
       perEthnicity = 6;
       perEthUnknown = 0;
 
-      pResidentAlien = 0; 
+      pResidentAlien = 0;
       usCitizen = 36;
       oCitizenStatus = 0;
 
-      perResidentAlien = 0; 
+      perResidentAlien = 0;
       perCitizen = 100;
       perCitizenStatus = 0;
 
       pubAssist = 11;
-      noPubAssist = 25; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 25;
+      pubAssistUnknown = 0;
 
       perPubAssist = 31;
-      perNoPubAssist = 69; 
+      perNoPubAssist = 69;
       perPubAssistUnknown = 0;
       break;
 
@@ -647,41 +695,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 91;
-      perMale = 9; 
+      perMale = 9;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 2; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 2;
+      nAmerican = 0;
       asian = 1;
-      white = 28; 
+      white = 28;
       black = 33;
       oEthnicity = 0;
       ethUnknown = 3;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 6;
       perNAmerican = 0;
       perAsian = 3;
       perWhite = 0;
-      perBlack = 82; 
+      perBlack = 82;
       perEthnicity = 0;
       perEthUnknown = 8;
 
-      pResidentAlien = 0; 
+      pResidentAlien = 0;
       usCitizen = 34;
       oCitizenStatus = 0;
 
-      perResidentAlien = 0; 
+      perResidentAlien = 0;
       perCitizen = 100;
       perCitizenStatus = 0;
 
       pubAssist = 22;
-      noPubAssist = 12; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 12;
+      pubAssistUnknown = 0;
 
       perPubAssist = 65;
-      perNoPubAssist = 35; 
+      perNoPubAssist = 35;
       perPubAssistUnknown = 0;
       break;
 
@@ -692,41 +740,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 45;
-      perMale = 55; 
+      perMale = 55;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 0; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 0;
+      nAmerican = 0;
       asian = 0;
-      white = 32; 
+      white = 32;
       black = 0;
       oEthnicity = 6;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 0;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 84;
-      perBlack = 0; 
+      perBlack = 0;
       perEthnicity = 16;
       perEthUnknown = 0;
 
-      pResidentAlien = 1; 
+      pResidentAlien = 1;
       usCitizen = 37;
       oCitizenStatus = 0;
 
-      perResidentAlien = 3; 
+      perResidentAlien = 3;
       perCitizen = 97;
       perCitizenStatus = 0;
 
       pubAssist = 10;
       noPubAssist = 28;
-      pubAssistUnknown = 0; 
+      pubAssistUnknown = 0;
 
       perPubAssist = 26;
-      perNoPubAssist = 74; 
+      perNoPubAssist = 74;
       perPubAssistUnknown = 0;
       break;
 
@@ -737,41 +785,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 87;
-      perMale = 13; 
+      perMale = 13;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 1; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 1;
+      nAmerican = 0;
       asian = 3;
-      white = 95; 
+      white = 95;
       black = 6;
       oEthnicity = 6;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 1;
       perNAmerican = 0;
       perAsian = 3;
       perWhite = 86;
-      perBlack = 5; 
+      perBlack = 5;
       perEthnicity = 5;
       perEthUnknown = 0;
 
-      pResidentAlien = 8; 
+      pResidentAlien = 8;
       usCitizen = 102;
       oCitizenStatus = 1;
 
-      perResidentAlien = 7; 
+      perResidentAlien = 7;
       perCitizen = 92;
       perCitizenStatus = 1;
 
       pubAssist = 51;
-      noPubAssist = 60; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 60;
+      pubAssistUnknown = 0;
 
       perPubAssist = 46;
-      perNoPubAssist = 54; 
+      perNoPubAssist = 54;
       perPubAssistUnknown = 0;
       break;
 
@@ -782,41 +830,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 85;
-      perMale = 15; 
+      perMale = 15;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 1; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 1;
+      nAmerican = 0;
       asian = 1;
-      white = 205; 
+      white = 205;
       black = 0;
       oEthnicity = 6;
       ethUnknown = 1;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 0;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 96;
-      perBlack = 0; 
+      perBlack = 0;
       perEthnicity = 3;
       perEthUnknown = 0;
 
-      pResidentAlien = 2; 
+      pResidentAlien = 2;
       usCitizen = 212;
       oCitizenStatus = 0;
 
-      perResidentAlien = 1; 
+      perResidentAlien = 1;
       perCitizen = 99;
       perCitizenStatus = 0;
 
       pubAssist = 112;
-      noPubAssist = 102; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 102;
+      pubAssistUnknown = 0;
 
       perPubAssist = 52;
-      perNoPubAssist = 48; 
+      perNoPubAssist = 48;
       perPubAssistUnknown = 0;
       break;
 
@@ -827,41 +875,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 49;
-      perMale = 51; 
+      perMale = 51;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 1; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 1;
+      nAmerican = 0;
       asian = 7;
-      white = 95; 
+      white = 95;
       black = 1;
       oEthnicity = 5;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 1;
       perNAmerican = 0;
       perAsian = 6;
       perWhite = 87;
-      perBlack = 5; 
+      perBlack = 5;
       perEthnicity = 5;
       perEthUnknown = 0;
 
-      pResidentAlien = 6; 
+      pResidentAlien = 6;
       usCitizen = 102;
       oCitizenStatus = 1;
 
-      perResidentAlien = 6; 
+      perResidentAlien = 6;
       perCitizen = 93;
       perCitizenStatus = 1;
 
       pubAssist = 20;
-      noPubAssist = 89; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 89;
+      pubAssistUnknown = 0;
 
       perPubAssist = 18;
-      perNoPubAssist = 82; 
+      perNoPubAssist = 82;
       perPubAssistUnknown = 0;
       break;
 
@@ -872,41 +920,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 57;
-      perMale = 43; 
+      perMale = 43;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 14; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 14;
+      nAmerican = 0;
       asian = 7;
-      white = 4; 
+      white = 4;
       black = 60;
       oEthnicity = 8;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 15;
       perNAmerican = 0;
       perAsian = 8;
       perWhite = 4;
-      perBlack = 65; 
+      perBlack = 65;
       perEthnicity = 9;
       perEthUnknown = 0;
 
-      pResidentAlien = 6; 
+      pResidentAlien = 6;
       usCitizen = 86;
       oCitizenStatus = 1;
 
-      perResidentAlien = 7; 
+      perResidentAlien = 7;
       perCitizen = 92;
       perCitizenStatus = 1;
 
       pubAssist = 28;
-      noPubAssist = 65; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 65;
+      pubAssistUnknown = 0;
 
       perPubAssist = 30;
-      perNoPubAssist = 70; 
+      perNoPubAssist = 70;
       perPubAssistUnknown = 0;
       break;
 
@@ -917,44 +965,44 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 100;
-      perMale = 0; 
+      perMale = 0;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 0; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 0;
+      nAmerican = 0;
       asian = 0;
-      white = 52; 
+      white = 52;
       black = 0;
       oEthnicity = 0;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 0;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 100;
-      perBlack = 0; 
+      perBlack = 0;
       perEthnicity = 0;
       perEthUnknown = 0;
 
-      pResidentAlien = 0; 
+      pResidentAlien = 0;
       usCitizen = 52;
       oCitizenStatus = 0;
 
-      perResidentAlien = 0; 
+      perResidentAlien = 0;
       perCitizen = 100;
       perCitizenStatus = 0;
 
       pubAssist = 22;
-      noPubAssist = 30; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 30;
+      pubAssistUnknown = 0;
 
       perPubAssist = 42;
-      perNoPubAssist = 58; 
+      perNoPubAssist = 58;
       perPubAssistUnknown = 0;
       break;
-  
+
     case "11229":
       participants = 52;
       female = 32;
@@ -962,41 +1010,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 62;
-      perMale = 38; 
+      perMale = 38;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 2; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 2;
+      nAmerican = 0;
       asian = 5;
-      white = 39; 
+      white = 39;
       black = 2;
       oEthnicity = 3;
       ethUnknown = 1;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 4;
       perNAmerican = 0;
       perAsian = 10;
       perWhite = 75;
-      perBlack = 4; 
+      perBlack = 4;
       perEthnicity = 6;
       perEthUnknown = 2;
 
-      pResidentAlien = 3; 
+      pResidentAlien = 3;
       usCitizen = 49;
       oCitizenStatus = 0;
 
-      perResidentAlien = 6; 
+      perResidentAlien = 6;
       perCitizen = 94;
       perCitizenStatus = 0;
 
       pubAssist = 5;
-      noPubAssist = 47; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 47;
+      pubAssistUnknown = 0;
 
       perPubAssist = 10;
-      perNoPubAssist = 90; 
+      perNoPubAssist = 90;
       perPubAssistUnknown = 0;
       break;
 
@@ -1007,41 +1055,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 78;
-      perMale = 22; 
+      perMale = 22;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 1; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 1;
+      nAmerican = 0;
       asian = 7;
-      white = 216; 
+      white = 216;
       black = 2;
       oEthnicity = 17;
       ethUnknown = 5;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 0;
       perNAmerican = 0;
       perAsian = 3;
       perWhite = 87;
-      perBlack = 1; 
+      perBlack = 1;
       perEthnicity = 7;
       perEthUnknown = 2;
 
-      pResidentAlien = 3; 
+      pResidentAlien = 3;
       usCitizen = 245;
       oCitizenStatus = 0;
 
-      perResidentAlien = 1; 
+      perResidentAlien = 1;
       perCitizen = 99;
       perCitizenStatus = 0;
 
       pubAssist = 42;
-      noPubAssist = 206; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 206;
+      pubAssistUnknown = 0;
 
       perPubAssist = 17;
-      perNoPubAssist = 83; 
+      perNoPubAssist = 83;
       perPubAssistUnknown = 0;
       break;
 
@@ -1052,41 +1100,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 49;
-      perMale = 51; 
+      perMale = 51;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 8; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 8;
+      nAmerican = 0;
       asian = 0;
-      white = 37; 
+      white = 37;
       black = 10;
       oEthnicity = 4;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 14;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 63;
-      perBlack = 17; 
+      perBlack = 17;
       perEthnicity = 6;
       perEthUnknown = 0;
 
-      pResidentAlien = 1; 
+      pResidentAlien = 1;
       usCitizen = 58;
       oCitizenStatus = 0;
 
-      perResidentAlien = 2; 
+      perResidentAlien = 2;
       perCitizen = 98;
       perCitizenStatus = 0;
 
       pubAssist = 2;
-      noPubAssist = 57; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 57;
+      pubAssistUnknown = 0;
 
       perPubAssist = 3;
-      perNoPubAssist = 97; 
+      perNoPubAssist = 97;
       perPubAssistUnknown = 0;
       break;
 
@@ -1097,41 +1145,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 34;
-      perMale = 66; 
+      perMale = 66;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 7; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 7;
+      nAmerican = 0;
       asian = 4;
-      white = 36; 
+      white = 36;
       black = 2;
       oEthnicity = 1;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 14;
       perNAmerican = 0;
       perAsian = 8;
       perWhite = 72;
-      perBlack = 4; 
+      perBlack = 4;
       perEthnicity = 2;
       perEthUnknown = 0;
 
-      pResidentAlien = 1; 
+      pResidentAlien = 1;
       usCitizen = 48;
       oCitizenStatus = 1;
 
-      perResidentAlien = 2; 
+      perResidentAlien = 2;
       perCitizen = 96;
       perCitizenStatus = 2;
 
       pubAssist = 4;
-      noPubAssist = 46; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 46;
+      pubAssistUnknown = 0;
 
       perPubAssist = 8;
-      perNoPubAssist = 92; 
+      perNoPubAssist = 92;
       perPubAssistUnknown = 0;
       break;
 
@@ -1142,41 +1190,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 32;
-      perMale = 68; 
+      perMale = 68;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 0; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 0;
+      nAmerican = 0;
       asian = 0;
-      white = 37; 
+      white = 37;
       black = 0;
       oEthnicity = 0;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 0;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 100;
-      perBlack = 0; 
+      perBlack = 0;
       perEthnicity = 0;
       perEthUnknown = 0;
 
-      pResidentAlien = 0; 
+      pResidentAlien = 0;
       usCitizen = 37;
       oCitizenStatus = 0;
 
-      perResidentAlien = 0; 
+      perResidentAlien = 0;
       perCitizen = 100;
       perCitizenStatus = 0;
 
       pubAssist = 3;
-      noPubAssist = 34; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 34;
+      pubAssistUnknown = 0;
 
       perPubAssist = 8;
-      perNoPubAssist = 92; 
+      perNoPubAssist = 92;
       perPubAssistUnknown = 0;
       break;
 
@@ -1187,41 +1235,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 60;
-      perMale = 40; 
+      perMale = 40;
       perUnknown = 0;
 
-      pIslander = 2; 
-      hLatino = 1; 
-      nAmerican = 0; 
+      pIslander = 2;
+      hLatino = 1;
+      nAmerican = 0;
       asian = 0;
-      white = 117; 
+      white = 117;
       black = 0;
       oEthnicity = 4;
       ethUnknown = 0;
 
-      perPIslander = 2; 
+      perPIslander = 2;
       perHLatino = 1;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 94;
-      perBlack = 0; 
+      perBlack = 0;
       perEthnicity = 3;
       perEthUnknown = 0;
 
-      pResidentAlien = 0; 
+      pResidentAlien = 0;
       usCitizen = 124;
       oCitizenStatus = 0;
 
-      perResidentAlien = 0; 
+      perResidentAlien = 0;
       perCitizen = 100;
       perCitizenStatus = 0;
 
       pubAssist = 71;
-      noPubAssist = 54; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 54;
+      pubAssistUnknown = 0;
 
       perPubAssist = 57;
-      perNoPubAssist = 43; 
+      perNoPubAssist = 43;
       perPubAssistUnknown = 0;
       break;
 
@@ -1232,41 +1280,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 9;
-      perMale = 91; 
+      perMale = 91;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 0; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 0;
+      nAmerican = 0;
       asian = 0;
-      white = 50; 
+      white = 50;
       black = 0;
       oEthnicity = 5;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 0;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 91;
-      perBlack = 0; 
+      perBlack = 0;
       perEthnicity = 9;
       perEthUnknown = 0;
 
-      pResidentAlien = 0; 
+      pResidentAlien = 0;
       usCitizen = 55;
       oCitizenStatus = 0;
 
-      perResidentAlien = 0; 
+      perResidentAlien = 0;
       perCitizen = 100;
       perCitizenStatus = 0;
 
       pubAssist = 19;
-      noPubAssist = 36; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 36;
+      pubAssistUnknown = 0;
 
       perPubAssist = 35;
-      perNoPubAssist = 65; 
+      perNoPubAssist = 65;
       perPubAssistUnknown = 0;
       break;
 
@@ -1277,41 +1325,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 100;
-      perMale = 0; 
+      perMale = 0;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 0; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 0;
+      nAmerican = 0;
       asian = 0;
-      white = 44; 
+      white = 44;
       black = 0;
       oEthnicity = 0;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 0;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 100;
-      perBlack = 0; 
+      perBlack = 0;
       perEthnicity = 0;
       perEthUnknown = 0;
 
-      pResidentAlien = 0; 
+      pResidentAlien = 0;
       usCitizen = 44;
       oCitizenStatus = 0;
 
-      perResidentAlien = 0; 
+      perResidentAlien = 0;
       perCitizen = 100;
       perCitizenStatus = 0;
 
       pubAssist = 35;
-      noPubAssist = 9; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 9;
+      pubAssistUnknown = 0;
 
       perPubAssist = 80;
-      perNoPubAssist = 20; 
+      perNoPubAssist = 20;
       perPubAssistUnknown = 0;
       break;
 
@@ -1322,41 +1370,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 4;
-      perMale = 96; 
+      perMale = 96;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 0; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 0;
+      nAmerican = 0;
       asian = 0;
-      white = 46; 
+      white = 46;
       black = 0;
       oEthnicity = 6;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 0;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 88;
-      perBlack = 0; 
+      perBlack = 0;
       perEthnicity = 12;
       perEthUnknown = 0;
 
-      pResidentAlien = 1; 
+      pResidentAlien = 1;
       usCitizen = 51;
       oCitizenStatus = 0;
 
-      perResidentAlien = 2; 
+      perResidentAlien = 2;
       perCitizen = 98;
       perCitizenStatus = 0;
 
       pubAssist = 21;
-      noPubAssist = 31; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 31;
+      pubAssistUnknown = 0;
 
       perPubAssist = 40;
-      perNoPubAssist = 60; 
+      perNoPubAssist = 60;
       perPubAssistUnknown = 0;
       break;
 
@@ -1367,41 +1415,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 56;
-      perMale = 44; 
+      perMale = 44;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 0; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 0;
+      nAmerican = 0;
       asian = 0;
-      white = 83; 
+      white = 83;
       black = 0;
       oEthnicity = 2;
       ethUnknown = 2;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 0;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 95;
-      perBlack = 0; 
+      perBlack = 0;
       perEthnicity = 2;
       perEthUnknown = 2;
 
-      pResidentAlien = 0; 
+      pResidentAlien = 0;
       usCitizen = 87;
       oCitizenStatus = 0;
 
-      perResidentAlien = 0; 
+      perResidentAlien = 0;
       perCitizen = 100;
       perCitizenStatus = 0;
 
       pubAssist = 18;
-      noPubAssist = 69; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 69;
+      pubAssistUnknown = 0;
 
       perPubAssist = 21;
-      perNoPubAssist = 79; 
+      perNoPubAssist = 79;
       perPubAssistUnknown = 0;
       break;
 
@@ -1412,41 +1460,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 67;
-      perMale = 33; 
+      perMale = 33;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 0; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 0;
+      nAmerican = 0;
       asian = 0;
-      white = 243; 
+      white = 243;
       black = 0;
       oEthnicity = 4;
       ethUnknown = 5;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 0;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 96;
-      perBlack = 0; 
+      perBlack = 0;
       perEthnicity = 2;
       perEthUnknown = 2;
 
-      pResidentAlien = 0; 
+      pResidentAlien = 0;
       usCitizen = 252;
       oCitizenStatus = 0;
 
-      perResidentAlien = 0; 
+      perResidentAlien = 0;
       perCitizen = 100;
       perCitizenStatus = 0;
 
       pubAssist = 61;
-      noPubAssist = 191; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 191;
+      pubAssistUnknown = 0;
 
       perPubAssist = 24;
-      perNoPubAssist = 76; 
+      perNoPubAssist = 76;
       perPubAssistUnknown = 0;
       break;
 
@@ -1457,41 +1505,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 97;
-      perMale = 3; 
+      perMale = 3;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 0; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 0;
+      nAmerican = 0;
       asian = 0;
-      white = 35; 
+      white = 35;
       black = 0;
       oEthnicity = 0;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 0;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 100;
-      perBlack = 0; 
+      perBlack = 0;
       perEthnicity = 0;
       perEthUnknown = 0;
 
-      pResidentAlien = 2; 
+      pResidentAlien = 2;
       usCitizen = 33;
       oCitizenStatus = 0;
 
-      perResidentAlien = 6; 
+      perResidentAlien = 6;
       perCitizen = 100;
       perCitizenStatus = 94;
 
       pubAssist = 20;
-      noPubAssist = 15; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 15;
+      pubAssistUnknown = 0;
 
       perPubAssist = 57;
-      perNoPubAssist = 43; 
+      perNoPubAssist = 43;
       perPubAssistUnknown = 0;
       break;
 
@@ -1502,41 +1550,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 97;
-      perMale = 3; 
+      perMale = 3;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 0; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 0;
+      nAmerican = 0;
       asian = 0;
-      white = 37; 
+      white = 37;
       black = 0;
       oEthnicity = 0;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 0;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 100;
-      perBlack = 0; 
+      perBlack = 0;
       perEthnicity = 0;
       perEthUnknown = 0;
 
-      pResidentAlien = 0; 
+      pResidentAlien = 0;
       usCitizen = 37;
       oCitizenStatus = 0;
 
-      perResidentAlien = 0; 
+      perResidentAlien = 0;
       perCitizen = 100;
       perCitizenStatus = 0;
 
       pubAssist = 21;
-      noPubAssist = 16; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 16;
+      pubAssistUnknown = 0;
 
       perPubAssist = 57;
-      perNoPubAssist = 43; 
+      perNoPubAssist = 43;
       perPubAssistUnknown = 0;
       break;
 
@@ -1547,41 +1595,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 48;
-      perMale = 52; 
+      perMale = 52;
       perUnknown = 0;
 
-      pIslander = 2; 
-      hLatino = 0; 
-      nAmerican = 0; 
+      pIslander = 2;
+      hLatino = 0;
+      nAmerican = 0;
       asian = 0;
-      white = 127; 
+      white = 127;
       black = 0;
       oEthnicity = 4;
       ethUnknown = 1;
 
-      perPIslander = 1; 
+      perPIslander = 1;
       perHLatino = 0;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 95;
-      perBlack = 0; 
+      perBlack = 0;
       perEthnicity = 3;
       perEthUnknown = 1;
 
-      pResidentAlien = 1; 
+      pResidentAlien = 1;
       usCitizen = 133;
       oCitizenStatus = 0;
 
-      perResidentAlien = 1; 
+      perResidentAlien = 1;
       perCitizen = 99;
       perCitizenStatus = 0;
 
       pubAssist = 27;
-      noPubAssist = 107; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 107;
+      pubAssistUnknown = 0;
 
       perPubAssist = 20;
-      perNoPubAssist = 80; 
+      perNoPubAssist = 80;
       perPubAssistUnknown = 0;
       break;
 
@@ -1592,41 +1640,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 61;
-      perMale = 39; 
+      perMale = 39;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 0; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 0;
+      nAmerican = 0;
       asian = 0;
-      white = 76; 
+      white = 76;
       black = 0;
       oEthnicity = 6;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 0;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 93;
-      perBlack = 0; 
+      perBlack = 0;
       perEthnicity = 7;
       perEthUnknown = 0;
 
-      pResidentAlien = 0; 
+      pResidentAlien = 0;
       usCitizen = 82;
       oCitizenStatus = 0;
 
-      perResidentAlien = 0; 
+      perResidentAlien = 0;
       perCitizen = 100;
       perCitizenStatus = 0;
 
       pubAssist = 24;
-      noPubAssist = 58; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 58;
+      pubAssistUnknown = 0;
 
       perPubAssist = 29;
-      perNoPubAssist = 71; 
+      perNoPubAssist = 71;
       perPubAssistUnknown = 0;
       break;
 
@@ -1637,41 +1685,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 95;
-      perMale = 5; 
+      perMale = 5;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 0; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 0;
+      nAmerican = 0;
       asian = 0;
-      white = 62; 
+      white = 62;
       black = 0;
       oEthnicity = 2;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 0;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 97;
-      perBlack = 0; 
+      perBlack = 0;
       perEthnicity = 3;
       perEthUnknown = 0;
 
-      pResidentAlien = 0; 
+      pResidentAlien = 0;
       usCitizen = 64;
       oCitizenStatus = 0;
 
-      perResidentAlien = 0; 
+      perResidentAlien = 0;
       perCitizen = 100;
       perCitizenStatus = 0;
 
       pubAssist = 5;
-      noPubAssist = 59; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 59;
+      pubAssistUnknown = 0;
 
       perPubAssist = 8;
-      perNoPubAssist = 92; 
+      perNoPubAssist = 92;
       perPubAssistUnknown = 0;
       break;
 
@@ -1682,41 +1730,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 2;
-      perMale = 98; 
+      perMale = 98;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 0; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 0;
+      nAmerican = 0;
       asian = 0;
-      white = 61; 
+      white = 61;
       black = 0;
       oEthnicity = 1;
       ethUnknown = 1;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 0;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 96;
-      perBlack = 0; 
+      perBlack = 0;
       perEthnicity = 2;
       perEthUnknown = 2;
 
-      pResidentAlien = 0; 
+      pResidentAlien = 0;
       usCitizen = 63;
       oCitizenStatus = 0;
 
-      perResidentAlien = 0; 
+      perResidentAlien = 0;
       perCitizen = 100;
       perCitizenStatus = 0;
 
       pubAssist = 23;
-      noPubAssist = 40; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 40;
+      pubAssistUnknown = 0;
 
       perPubAssist = 37;
-      perNoPubAssist = 63; 
+      perNoPubAssist = 63;
       perPubAssistUnknown = 0;
       break;
 
@@ -1727,41 +1775,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 76;
-      perMale = 24; 
+      perMale = 24;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 0; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 0;
+      nAmerican = 0;
       asian = 0;
-      white = 239; 
+      white = 239;
       black = 0;
       oEthnicity = 3;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 0;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 99;
-      perBlack = 0; 
+      perBlack = 0;
       perEthnicity = 1;
       perEthUnknown = 0;
 
-      pResidentAlien = 1; 
+      pResidentAlien = 1;
       usCitizen = 241;
       oCitizenStatus = 0;
 
-      perResidentAlien = 0; 
+      perResidentAlien = 0;
       perCitizen = 100;
       perCitizenStatus = 0;
 
       pubAssist = 155;
-      noPubAssist = 87; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 87;
+      pubAssistUnknown = 0;
 
       perPubAssist = 64;
-      perNoPubAssist = 36; 
+      perNoPubAssist = 36;
       perPubAssistUnknown = 0;
       break;
 
@@ -1772,41 +1820,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 33;
-      perMale = 67; 
+      perMale = 67;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 0; 
-      nAmerican = 2; 
+      pIslander = 0;
+      hLatino = 0;
+      nAmerican = 2;
       asian = 0;
-      white = 195; 
+      white = 195;
       black = 0;
       oEthnicity = 3;
       ethUnknown = 1;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 0;
       perNAmerican = 1;
       perAsian = 0;
       perWhite = 97;
-      perBlack = 0; 
+      perBlack = 0;
       perEthnicity = 1;
       perEthUnknown = 0;
 
-      pResidentAlien = 4; 
+      pResidentAlien = 4;
       usCitizen = 197;
       oCitizenStatus = 0;
 
-      perResidentAlien = 2; 
+      perResidentAlien = 2;
       perCitizen = 98;
       perCitizenStatus = 0;
 
       pubAssist = 77;
-      noPubAssist = 124; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 124;
+      pubAssistUnknown = 0;
 
       perPubAssist = 38;
-      perNoPubAssist = 62; 
+      perNoPubAssist = 62;
       perPubAssistUnknown = 0;
       break;
 
@@ -1817,41 +1865,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 47;
-      perMale = 53; 
+      perMale = 53;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 0; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 0;
+      nAmerican = 0;
       asian = 0;
-      white = 81; 
+      white = 81;
       black = 0;
       oEthnicity = 2;
       ethUnknown = 0;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 0;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 98;
-      perBlack = 0; 
+      perBlack = 0;
       perEthnicity = 0;
       perEthUnknown = 2;
 
-      pResidentAlien = 0; 
+      pResidentAlien = 0;
       usCitizen = 83;
       oCitizenStatus = 0;
 
-      perResidentAlien = 0; 
+      perResidentAlien = 0;
       perCitizen = 100;
       perCitizenStatus = 0;
 
       pubAssist = 35;
-      noPubAssist = 48; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 48;
+      pubAssistUnknown = 0;
 
       perPubAssist = 42;
-      perNoPubAssist = 58; 
+      perNoPubAssist = 58;
       perPubAssistUnknown = 0;
       break;
 
@@ -1862,41 +1910,41 @@ function checkZipcode(){
       unknown = 0;
 
       perFemale = 42;
-      perMale = 58; 
+      perMale = 58;
       perUnknown = 0;
 
-      pIslander = 0; 
-      hLatino = 0; 
-      nAmerican = 0; 
+      pIslander = 0;
+      hLatino = 0;
+      nAmerican = 0;
       asian = 0;
-      white = 262; 
+      white = 262;
       black = 0;
       oEthnicity = 6;
       ethUnknown = 4;
 
-      perPIslander = 0; 
+      perPIslander = 0;
       perHLatino = 0;
       perNAmerican = 0;
       perAsian = 0;
       perWhite = 96;
-      perBlack = 0; 
+      perBlack = 0;
       perEthnicity = 2;
       perEthUnknown = 1;
 
-      pResidentAlien = 1; 
+      pResidentAlien = 1;
       usCitizen = 271;
       oCitizenStatus = 0;
 
-      perResidentAlien = 0; 
+      perResidentAlien = 0;
       perCitizen = 100;
       perCitizenStatus = 0;
 
       pubAssist = 70;
-      noPubAssist = 202; 
-      pubAssistUnknown = 0; 
+      noPubAssist = 202;
+      pubAssistUnknown = 0;
 
       perPubAssist = 26;
-      perNoPubAssist = 74; 
+      perNoPubAssist = 74;
       perPubAssistUnknown = 0;
       break;
   }
@@ -1904,24 +1952,24 @@ function checkZipcode(){
   if (zipcode == "New York City, New York") {
 
   } else {
-    document.getElementById("result-content").innerHTML = "<h3>Result:</h3>" + 
+    document.getElementById("result-content").innerHTML = "<h3>Result:</h3>" +
       "ZipCode: " + zipcode +
-      "<br/>Participants: " + participants + 
-      "<br/>Female: " + female + " (" + perFemale + "%)" + 
-      "<br/>Male: " + male + " (" + perMale + "%)" + 
-      "<br/>Gender Unknown: " + unknown + " (" + perUnknown + "%)" + 
-      "<br/>Pacific Islander: " + pIslander + " (" + perPIslander + "%)" + 
-      "<br/>Hispanic Latino: " + hLatino + " (" + perHLatino + "%)" + 
-      "<br/>Native American: " + nAmerican + " (" + perNAmerican + "%)" + 
-      "<br/>Asian: " + asian + " (" + perAsian + "%)" + 
-      "<br/>Caucasian: " + white + " (" + perWhite + "%)" + 
-      "<br/>African: " + black + " (" + perBlack + "%)" + 
-      "<br/>Other Ethnicity: " + oEthnicity + " (" + perEthnicity + "%)" + 
-      "<br/>Ethnicity Unknown: " + ethUnknown + " (" + perEthUnknown + "%)" + 
-      "<br/>Permanent Resident Alien: " + pResidentAlien + " (" + perResidentAlien + "%)" + 
-      "<br/>US Citizen: " + usCitizen + " (" + perCitizen + "%)" + 
-      "<br/>Other Citizen Status: " + oCitizenStatus + " (" + perCitizenStatus + "%)" + 
-      "<br/>Receives Public Assistance: " + pubAssist + " (" + perPubAssist + "%)" + 
+      "<br/>Participants: " + participants +
+      "<br/>Female: " + female + " (" + perFemale + "%)" +
+      "<br/>Male: " + male + " (" + perMale + "%)" +
+      "<br/>Gender Unknown: " + unknown + " (" + perUnknown + "%)" +
+      "<br/>Pacific Islander: " + pIslander + " (" + perPIslander + "%)" +
+      "<br/>Hispanic Latino: " + hLatino + " (" + perHLatino + "%)" +
+      "<br/>Native American: " + nAmerican + " (" + perNAmerican + "%)" +
+      "<br/>Asian: " + asian + " (" + perAsian + "%)" +
+      "<br/>Caucasian: " + white + " (" + perWhite + "%)" +
+      "<br/>African: " + black + " (" + perBlack + "%)" +
+      "<br/>Other Ethnicity: " + oEthnicity + " (" + perEthnicity + "%)" +
+      "<br/>Ethnicity Unknown: " + ethUnknown + " (" + perEthUnknown + "%)" +
+      "<br/>Permanent Resident Alien: " + pResidentAlien + " (" + perResidentAlien + "%)" +
+      "<br/>US Citizen: " + usCitizen + " (" + perCitizen + "%)" +
+      "<br/>Other Citizen Status: " + oCitizenStatus + " (" + perCitizenStatus + "%)" +
+      "<br/>Receives Public Assistance: " + pubAssist + " (" + perPubAssist + "%)" +
       "<br/>No Public Assistance: " + noPubAssist + " (" + perNoPubAssist + "%)";
   }
 }
@@ -1932,17 +1980,43 @@ function importData() {
       })
 }
 
+var zipCodesList = "'11211', '10002', '12737', '11210', '11204', '11691', '12750', '11213', '10451', '10471', '10001', '12466', '10461', '11235', '10458', '11225', '11229', '12528', '12435', '10463', '11234', '12768', '12764', '10466', '10468', '12758', '12788', '12701', '11224', '10467', '11223', '11218', '12428', '12754', '12783', '11219', '12779', '11230', '12734', '12789'"
+
+var tableid =  1499916;
+
 function initialize() {
   geocoder = new google.maps.Geocoder();
   map = new google.maps.Map(
     document.getElementById("map-canvas"), {
-      scrollwheel: false,
-      disableDoubleClickZoom: true,
+      scrollwheel: true,
+      disableDoubleClickZoom: false,
       mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+//1frxdip2S5GlSk_9gIhNAN9yPZcNtAxaWAAFNb0Dw
+    // layer = new google.maps.FusionTablesLayer(tableid);
+    // layer.setQuery("SELECT 'geometry' FROM " + tableid);
+
+
+    google.maps.event.addListener(map, "bounds_changed", function() {
+      displayZips();
     });
 
     google.maps.event.addDomListener(document.getElementById('btn'), 'click', codeAddress);
   codeAddress();
 
 }
+
+function displayZips() {
+  //set the query using the current bounds
+  // var queryStr = "SELECT geometry, ZIP, latitude, longitude FROM "+ tableid + " WHERE ST_INTERSECTS(geometry, RECTANGLE(LATLNG"+map.getBounds().getSouthWest()+",LATLNG"+map.getBounds().getNorthEast()+"))";
+  // var queryText = encodeURIComponent(queryStr);
+  // var query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq='  + queryText);
+  // alert(queryStr);
+
+  //set the callback function
+//  query.send(displayZipText);
+
+}
+
 google.maps.event.addDomListener(window, "load", initialize);
