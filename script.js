@@ -1,6 +1,105 @@
 var geocoder, map, marker, options;
 
 var layer = null;
+var legend = null;
+
+function TxtOverlay(pos, txt, cls, map) {
+
+      // Now initialize all properties.
+      this.pos = pos;
+      this.txt_ = txt;
+      this.cls_ = cls;
+      this.map_ = map;
+
+      // We define a property to hold the image's
+      // div. We'll actually create this div
+      // upon receipt of the add() method so we'll
+      // leave it null for now.
+      this.div_ = null;
+
+      // Explicitly call setMap() on this overlay
+      this.setMap(map);
+    }
+
+    TxtOverlay.prototype = new google.maps.OverlayView();
+
+
+
+    TxtOverlay.prototype.onAdd = function() {
+
+      // Note: an overlay's receipt of onAdd() indicates that
+      // the map's panes are now available for attaching
+      // the overlay to the map via the DOM.
+
+      // Create the DIV and set some basic attributes.
+      var div = document.createElement('DIV');
+      div.className = this.cls_;
+
+      div.innerHTML = this.txt_;
+
+      // Set the overlay's div_ property to this DIV
+      this.div_ = div;
+      var overlayProjection = this.getProjection();
+      var position = overlayProjection.fromLatLngToDivPixel(this.pos);
+      div.style.left = position.x + 'px';
+      div.style.top = position.y + 'px';
+      // We add an overlay to a map via one of the map's panes.
+
+      var panes = this.getPanes();
+      panes.floatPane.appendChild(div);
+    }
+    TxtOverlay.prototype.draw = function() {
+
+
+        var overlayProjection = this.getProjection();
+
+        // Retrieve the southwest and northeast coordinates of this overlay
+        // in latlngs and convert them to pixels coordinates.
+        // We'll use these coordinates to resize the DIV.
+        var position = overlayProjection.fromLatLngToDivPixel(this.pos);
+
+
+        var div = this.div_;
+        div.style.left = position.x + 'px';
+        div.style.top = position.y + 'px';
+
+
+
+      }
+      //Optional: helper methods for removing and toggling the text overlay.
+    TxtOverlay.prototype.onRemove = function() {
+      this.div_.parentNode.removeChild(this.div_);
+      this.div_ = null;
+    }
+    TxtOverlay.prototype.hide = function() {
+      if (this.div_) {
+        this.div_.style.visibility = "hidden";
+      }
+    }
+
+    TxtOverlay.prototype.show = function() {
+      if (this.div_) {
+        this.div_.style.visibility = "visible";
+      }
+    }
+
+    TxtOverlay.prototype.toggle = function() {
+      if (this.div_) {
+        if (this.div_.style.visibility == "hidden") {
+          this.show();
+        } else {
+          this.hide();
+        }
+      }
+    }
+
+    TxtOverlay.prototype.toggleDOM = function() {
+      if (this.getMap()) {
+        this.setMap(null);
+      } else {
+        this.setMap(this.map_);
+      }
+    }
 
 function codeAddress() {
 
@@ -39,6 +138,84 @@ function ShowHideDiv(chkResults) {
   resultsCanvas.style.display = chkResults.checked ? "block" : "none";
 }
 
+function displayAssistance(chkResults) {
+
+}
+
+function displayEthnicity(chkResults) {
+  if (!layer) {
+    layer = new google.maps.FusionTablesLayer({
+       query: {
+         select: 'geometry',
+         from: '1ch2OLT-VqhkgIoXjFgBXcjoIZ45Fk-utRqDelWei',
+       },
+
+       styles: [{
+          polygonOptions: {
+            fillColor: '#FF0000',
+            fillOpacity: 0.3
+
+          }
+        },  {
+          where: "'MAIN ETHNICITY' = 'BLACK NON HISPANIC'",
+          polygonOptions: {
+            fillColor: '#0000FF',
+            fillOpacity: 0.3
+          }
+        },  {
+          where: "'MAIN ETHNICITY' = 'HISPANIC LATINO'",
+          polygonOptions: {
+            fillColor: '#00FF00',
+            fillOpacity: 0.3
+          }
+        },  {
+          where: "'MAIN ETHNICITY' = 'WHITE NON HISPANIC'",
+          polygonOptions: {
+            fillColor: '#FF0000',
+            fillOpacity: 0.3
+          }
+        }],
+         suppressInfoWindows:false,
+     });
+    layer.setMap(map);
+
+    google.maps.event.addListener(layer, 'click',
+                            function(e){
+                              console.log(e);
+                              var x = document.getElementsByClassName("googft-info-window");
+                              x[0].innerHTML = "<div class='googft-info-window'>"
+                             + "<b>ZIP:   </b>" + e.row["ZIP"].value + "<br><br>"
+                            +  "<b>COUNT PARTICIPANTS:    </b>" + e.row["COUNT PARTICIPANTS"].value + "<br>"
+                            + "<b>PERCENT AMERICAN INDIAN:   </b>" + Math.round(e.row["PERCENT AMERICAN INDIAN"].value * 100) + "%<br>"
+                            + "<b>PERCENT ASIAN NON HISPANIC:   </b>" + Math.round(e.row["PERCENT ASIAN NON HISPANIC"].value * 100) + "%<br>"
+                            + "<b>PERCENT BLACK NON HISPANIC:   </b>" + Math.round(e.row["PERCENT BLACK NON HISPANIC"].value * 100) + "%<br>"
+                            + "<b>PERCENT HISPANIC LATINO:   </b>" + Math.round(e.row["PERCENT HISPANIC LATINO"].value * 100) + "%<br>"
+                            + "<b>PERCENT PACIFIC ISLANDER:   </b>" + Math.round(e.row["PERCENT PACIFIC ISLANDER"].value * 100) + "%<br>"
+                            + "<b>PERCENT WHITE NON HISPANIC:   </b>" + Math.round(e.row["PERCENT WHITE NON HISPANIC"].value * 100) + "%<br>"
+                            + "<b>PERCENT OTHER ETHNICITY:   </b>" + Math.round(e.row["PERCENT OTHER ETHNICITY"].value * 100) + "%<br>"
+                            + "<b>PERCENT ETHNICITY UNKNOWN:   </b>" + Math.round(e.row["PERCENT ETHNICITY UNKNOWN"].value * 100) + "%<br>"
+
+                            + "</div>";
+                              console.log(e.row.ZIP.value);
+                              checkZipcode(e.row.ZIP.value);
+                            });
+      var content = [];
+      content.push('<h3>Main Ethnicity</h3>');
+      content.push('<p><div class="color bnh"></div>Black Non Hispanic</p>');
+      content.push('<p><div class="color hl"></div>Hispanic Latino</p>');
+      content.push('<p><div class="color wnh"></div>White Non Hispanic</p>');
+      legend.innerHTML = content.join('');
+      legend.index = 1;
+//      map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
+
+
+  } else {
+    layer.setMap(null);
+    layer = null;
+    chkResults.checked = false;
+  }
+}
+
 function displayGender(chkResults) {
 //  layer.setMap(null);
 
@@ -72,10 +249,31 @@ function displayGender(chkResults) {
 
     google.maps.event.addListener(layer, 'click',
                             function(e){
-                              console.log(e);
+                            console.log(e);
+                            var x = document.getElementsByClassName("googft-info-window");
+                            x[0].innerHTML = "<div class='googft-info-window'>"
+                           + "<b>ZIP:   </b>" + e.row["ZIP"].value + "<br><br>"
+                          +  "<b>COUNT PARTICIPANTS:    </b>" + e.row["COUNT PARTICIPANTS"].value + "<br>"
+                          + "<b>PERCENT FEMALE:   </b>" + Math.round(e.row["PERCENT FEMALE"].value * 100) + "%<br>"
+                          + "<b>PERCENT MALE:   </b>" + Math.round(e.row["PERCENT MALE"].value * 100) + "%<br>"
+                          + "</div>";
+                              console.log(e.row["COUNT PARTICIPANTS"].value)
                               console.log(e.row.ZIP.value);
                               checkZipcode(e.row.ZIP.value);
                             });
+
+      var content = [];
+      content.push('<h3>Gender</h3>');
+      content.push('<p><div class="color female"></div>Female</p>');
+      content.push('<p><div class="color male"></div>Male</p>');
+      legend.innerHTML = content.join('');
+      legend.index = 1;
+
+
+      // var latlng = new google.maps.LatLng(37.9069, -122.0792);
+      //  customTxt = "<div>Blah blah sdfsddddddddddddddd ddddddddddddddddddddd<ul><li>Blah 1<li>blah 2 </ul></div>"
+      //      txt = new TxtOverlay(latlng, customTxt, "customBox", map)
+
 
   } else {
     layer.setMap(null);
@@ -102,7 +300,6 @@ function checkZipcode(zipcode){
 
 
   switch (zipcode) {
-
     case "10001":
       participants = 44;
       female = 22;
@@ -2004,6 +2201,10 @@ function initialize() {
 
     google.maps.event.addDomListener(document.getElementById('btn'), 'click', codeAddress);
   codeAddress();
+
+  legend = document.createElement('div');
+  legend.id = 'legend';
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
 
 }
 

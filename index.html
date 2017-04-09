@@ -8,6 +8,46 @@
     <!-- Personal Stylesheets -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css" type="text/css">
+
+    <style type="text/css">
+      #legend {
+        background: #FFF;
+        padding: 10px;
+        margin: 5px;
+        font-size: 12px;
+        font-family: Arial, sans-serif;
+      }
+
+      .color {
+       border: 1px solid;
+       height: 12px;
+       width: 12px;
+       margin-right: 3px;
+       float: left;
+     }
+
+     .male {
+       background: #FF0000;
+     }
+
+     .female {
+       background: #0000FF;
+     }
+
+     .bnh {
+       background: #0000FF;
+     }
+
+     .hl {
+       background: #00FF00;
+     }
+
+     .wnh {
+       background: #FF0000;
+     }
+
+    </style>
+
   </head>
 
   <body>
@@ -28,13 +68,13 @@
      			<input type="checkbox" value="" onclick="ShowHideDiv(this)" checked>Results
     		</label>
 		    <label class="radio-inline">
-		    	<input type="radio" name="optradio" onclick="displayGender(this)">Gender Layer
+		    	<input type="radio" name="optradio" onclick="displayGender(this);">Gender Layer
 		    </label>
 		    <label class="radio-inline">
-		    	<input type="radio" name="optradio">Layer 2
+		    	<input type="radio" name="optradio" onclick="displayEthnicity(this);">Ethnicity Layer
 		    </label>
 		    <label class="radio-inline">
-		    	<input type="radio" name="optradio">No Layer
+		    	<input type="radio" name="optradio" onclick="displayAssistance(this);">Assistance Layer
 		    </label>
   		</form>
 	</div>
