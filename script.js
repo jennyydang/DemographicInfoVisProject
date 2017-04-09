@@ -140,6 +140,95 @@ function ShowHideDiv(chkResults) {
 
 function displayAssistance(chkResults) {
 
+  if (!layer) {
+    layer = new google.maps.FusionTablesLayer({
+       query: {
+         select: 'geometry',
+         from: '1Nrqoo5iSJW363DDfDx5NKCrQvQVLuKGg8wKF0i2S',
+       },
+
+       styles: [{
+          polygonOptions: {
+            fillColor: '#FF0000',
+            fillOpacity: 0.1
+          }
+        },  {
+          where: "'PERCENT RECEIVES PUBLIC ASSISTANCE' > 0 ",
+          polygonOptions: {
+            fillColor: '#0000FF',
+            fillOpacity: 0.1
+          }
+        },  {
+          where: "'PERCENT RECEIVES PUBLIC ASSISTANCE' > 0.2 ",
+          polygonOptions: {
+            fillColor: '#0000FF',
+            fillOpacity: 0.2
+          }
+        },  {
+          where: "'PERCENT RECEIVES PUBLIC ASSISTANCE' > 0.4 ",
+          polygonOptions: {
+            fillColor: '#0000FF',
+            fillOpacity: 0.4
+          }
+        },  {
+          where: "'PERCENT RECEIVES PUBLIC ASSISTANCE' > 0.6",
+          polygonOptions: {
+            fillColor: '#0000FF',
+            fillOpacity: 0.6
+          }
+        },  {
+          where: "'PERCENT RECEIVES PUBLIC ASSISTANCE' > 0.8 ",
+          polygonOptions: {
+            fillColor: '#0000FF',
+            fillOpacity: 0.8
+          }
+        },  {
+          where: "'PERCENT RECEIVES PUBLIC ASSISTANCE' = 1 ",
+          polygonOptions: {
+            fillColor: '#0000FF',
+            fillOpacity: 1
+          }
+        }],
+         suppressInfoWindows:false,
+     });
+    layer.setMap(map);
+
+    google.maps.event.addListener(layer, 'click',
+                            function(e){
+                            console.log(e);
+                            var x = document.getElementsByClassName("googft-info-window");
+                            x[0].innerHTML = "<div class='googft-info-window'>"
+                           + "<b>ZIP:   </b>" + e.row["ZIP"].value + "<br><br>"
+                          +  "<b>COUNT PARTICIPANTS:    </b>" + e.row["COUNT PARTICIPANTS"].value + "<br>"
+                          + "<b>PERCENT RECEIVES PUBLIC ASSISTANCE:   </b>" + Math.round(e.row["PERCENT RECEIVES PUBLIC ASSISTANCE"].value * 100) + "%<br>"
+                          + "<b>PERCENT NOT RECEIVES PUBLIC ASSISTANCE:   </b>" + Math.round(e.row["PERCENT NRECEIVES PUBLIC ASSISTANCE"].value * 100) + "%<br>"
+                          + "</div>";
+                              // console.log(e.row["COUNT PARTICIPANTS"].value)
+                              // console.log(e.row.ZIP.value);
+                              checkZipcode(e.row.ZIP.value);
+                            });
+
+      // var content = [];
+      // content.push('<h3>Receiving public Assistance</h3>');
+      // content.push('<p><div class="color more"></div>More Than 50%</p>');
+      // content.push('<p><div class="color less"></div>Less Than 50%</p>');
+      // legend.innerHTML = content.join('');
+      // legend.index = 1;
+      //
+      // legend.hidden = false;
+
+      // var latlng = new google.maps.LatLng(37.9069, -122.0792);
+      //  customTxt = "<div>Blah blah sdfsddddddddddddddd ddddddddddddddddddddd<ul><li>Blah 1<li>blah 2 </ul></div>"
+      //      txt = new TxtOverlay(latlng, customTxt, "customBox", map)
+
+
+  } else {
+//    legend.hidden = true;
+    layer.setMap(null);
+    layer = null;
+    chkResults.checked = false;
+  }
+
 }
 
 function displayEthnicity(chkResults) {
@@ -153,26 +242,32 @@ function displayEthnicity(chkResults) {
        styles: [{
           polygonOptions: {
             fillColor: '#FF0000',
-            fillOpacity: 0.3
+            fillOpacity: 0.7
 
           }
         },  {
           where: "'MAIN ETHNICITY' = 'BLACK NON HISPANIC'",
           polygonOptions: {
             fillColor: '#0000FF',
-            fillOpacity: 0.3
+            fillOpacity:0.7
           }
         },  {
           where: "'MAIN ETHNICITY' = 'HISPANIC LATINO'",
           polygonOptions: {
             fillColor: '#00FF00',
-            fillOpacity: 0.3
+            fillOpacity: 0.7
           }
         },  {
           where: "'MAIN ETHNICITY' = 'WHITE NON HISPANIC'",
           polygonOptions: {
+            fillColor: '#FFFF00',
+            fillOpacity: 0.7
+          }
+        },  {
+          where: "'MAIN ETHNICITY' = 'ASIAN NON HISPANIC'",
+          polygonOptions: {
             fillColor: '#FF0000',
-            fillOpacity: 0.3
+            fillOpacity: 0.7
           }
         }],
          suppressInfoWindows:false,
@@ -204,12 +299,15 @@ function displayEthnicity(chkResults) {
       content.push('<p><div class="color bnh"></div>Black Non Hispanic</p>');
       content.push('<p><div class="color hl"></div>Hispanic Latino</p>');
       content.push('<p><div class="color wnh"></div>White Non Hispanic</p>');
+      content.push('<p><div class="color anh"></div>Asian Non Hispanic</p>');
       legend.innerHTML = content.join('');
       legend.index = 1;
 //      map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
+      legend.hidden = false;
 
 
   } else {
+    legend.hidden = true;
     layer.setMap(null);
     layer = null;
     chkResults.checked = false;
@@ -230,11 +328,6 @@ function displayGender(chkResults) {
           polygonOptions: {
             fillColor: '#FF0000',
             fillOpacity: 0.3
-            // fillColor: '#0000ff',
-            // fillOpacity: 0.01,
-            // zIndex: 1000,
-            // strokeWeight: 0.5,
-            // strokeOpacity: 0.7,
           }
         },  {
           where: "'PERCENT FEMALE' >= 0.5 ",
@@ -269,6 +362,7 @@ function displayGender(chkResults) {
       legend.innerHTML = content.join('');
       legend.index = 1;
 
+      legend.hidden = false;
 
       // var latlng = new google.maps.LatLng(37.9069, -122.0792);
       //  customTxt = "<div>Blah blah sdfsddddddddddddddd ddddddddddddddddddddd<ul><li>Blah 1<li>blah 2 </ul></div>"
@@ -276,6 +370,7 @@ function displayGender(chkResults) {
 
 
   } else {
+    legend.hidden = true;
     layer.setMap(null);
     layer = null;
     chkResults.checked = false;
@@ -2205,6 +2300,7 @@ function initialize() {
   legend = document.createElement('div');
   legend.id = 'legend';
   map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
+  legend.hidden = true;
 
 }
 
